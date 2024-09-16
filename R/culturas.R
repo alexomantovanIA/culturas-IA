@@ -143,6 +143,12 @@ escolher_cultura <- function() {
   
   escolha <- as.numeric(readline("Escolha uma opção: "))
   
+#Add 15092024 - Verifica se primeira escolha é nula ("na" - not available)
+  if (is.na(escolha)) {
+    cat("Opção inválida. Tente novamente.\n")
+    return(escolher_cultura())
+  }
+  
   if (escolha == 1) {
     return(list("Milho", milho_dados))
   } else if (escolha == 2) {
