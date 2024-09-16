@@ -1,15 +1,3 @@
-# print("Esse programa exibirá o seu nome completo")
-# nome = input("Por favor, digite seu nome: ")
-# sobrenome = input("Por favor, digite seu sobrenome: ")
-# nome_completo = nome + " " + sobrenome
-# print(f"Seu nome completo é {nome_completo}")
-
-# numbers = [1,2,3,4,5]
-# doubles = [num * 2 for num in numbers]
-# triplets = [num * 3 for num in numbers]
-# print(triplets)
-print("FAZENDA AROEIRAS")
-print("Assistente de Plantio e Manejo")
 # Dados das culturas
 milho_dados = {
     "sementes_por_hectare": 20,  # kg por hectare
@@ -86,6 +74,41 @@ def escolher_cultura():
         print("Opção inválida. Tente novamente.")
         return escolher_cultura()
 
+# Função para atualizar dados de uma cultura
+def atualizar_dados(cultura, dados):
+    print(f"\nAtualizando dados para {cultura}:")
+    itens = list(dados.keys())
+    for i, item in enumerate(itens, start=1):
+        print(f"{i} - {item}: {dados[item]}")
+    try:
+        escolha = int(input("Informe o número do item que deseja atualizar: "))
+        if 1 <= escolha <= len(itens):
+            chave = itens[escolha - 1]
+            novo_valor = int(input(f"Informe o novo valor para {chave}: "))
+            dados[chave] = novo_valor
+            print(f"{chave} atualizado para {novo_valor}.")
+        else:
+            print("Número inválido.")
+    except ValueError:
+        print("Entrada inválida. Por favor, insira um número.")
+
+# Função para deletar dados de uma cultura
+def deletar_dados(cultura, dados):
+    print(f"\nDeletando dados para {cultura}:")
+    itens = list(dados.keys())
+    for i, item in enumerate(itens, start=1):
+        print(f"{i} - {item}: {dados[item]}")
+    try:
+        escolha = int(input("Informe o número do item que deseja deletar: "))
+        if 1 <= escolha <= len(itens):
+            chave = itens[escolha - 1]
+            dados[chave] = 0  # Define o valor como 0 ao invés de deletar a chave
+            print(f"Valor de {chave} deletado (definido como 0).")
+        else:
+            print("Número inválido.")
+    except ValueError:
+        print("Entrada inválida. Por favor, insira um número.")
+
 # Função principal
 def menu_principal():
     while True:
@@ -142,6 +165,19 @@ def menu_principal():
             resultado2 = calcular_para_area(area2, dados2)
             for item, valor in resultado2.items():
                 print(f"{item.capitalize()}: {valor}")
+
+        # Perguntar se o usuário deseja atualizar ou deletar dados
+        atualizar = input("\nDeseja atualizar algum dado? (S para Sim, N para Não): ").upper()
+        if atualizar == "S":
+            atualizar_dados(cultura1, dados1)
+            if cultura2:
+                atualizar_dados(cultura2, dados2)
+
+        deletar = input("\nDeseja deletar algum dado? (S para Sim, N para Não): ").upper()
+        if deletar == "S":
+            deletar_dados(cultura1, dados1)
+            if cultura2:
+                deletar_dados(cultura2, dados2)
 
         # Perguntar se o usuário deseja sair ou reiniciar
         reiniciar = input("\nDeseja realizar outra operação? (S para Sim, N para Não): ").upper()
