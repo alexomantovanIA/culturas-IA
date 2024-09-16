@@ -1,3 +1,5 @@
+print("FAZENDA AROEIRAS")
+print("Assistente de Plantio e Manejo")
 # Dados das culturas
 milho_dados = {
     "sementes_por_hectare": 20,  # kg por hectare
