@@ -211,6 +211,57 @@ exibir_resultados_e_previsao <- function(area, cultura, resultado) {
   cat("\nAtenção: Prepare-se para o plantio nos próximos dias, de acordo com a previsão do tempo!", previsao, "\n")
 }
 
+# Função para atualizar dados de uma cultura
+atualizar_dados <- function(cultura, dados) {
+  cat("\nAtualizando dados para", cultura, ":\n")
+  itens <- names(dados)
+  
+  # Exibir itens com valores atuais
+  for (i in seq_along(itens)) {
+    cat(i, "-", itens[i], ":", dados[[itens[i]]], "\n")
+  }
+  
+  # Perguntar qual item o usuário deseja atualizar
+  escolha <- as.numeric(readline("Informe o número do item que deseja atualizar: "))
+  
+  if (!is.na(escolha) && escolha >= 1 && escolha <= length(itens)) {
+    chave <- itens[escolha]
+    novo_valor <- as.numeric(readline(paste("Informe o novo valor para", chave, ": ")))
+    if (!is.na(novo_valor)) {
+      dados[[chave]] <- novo_valor
+      cat(chave, "atualizado para", novo_valor, ".\n")
+    } else {
+      cat("Entrada inválida. O valor deve ser numérico.\n")
+    }
+  } else {
+    cat("Número inválido.\n")
+  }
+  return(dados)
+}
+
+# Função para deletar dados de uma cultura
+deletar_dados <- function(cultura, dados) {
+  cat("\nDeletando dados para", cultura, ":\n")
+  itens <- names(dados)
+  
+  # Exibir itens com valores atuais
+  for (i in seq_along(itens)) {
+    cat(i, "-", itens[i], ":", dados[[itens[i]]], "\n")
+  }
+  
+  # Perguntar qual item o usuário deseja deletar
+  escolha <- as.numeric(readline("Informe o número do item que deseja deletar: "))
+  
+  if (!is.na(escolha) && escolha >= 1 && escolha <= length(itens)) {
+    chave <- itens[escolha]
+    dados[[chave]] <- 0  # Definir o valor como 0 ao invés de deletar a chave
+    cat("Valor de", chave, "deletado (definido como 0).\n")
+  } else {
+    cat("Número inválido.\n")
+  }
+  return(dados)
+}
+
 # Modifique o trecho onde os resultados são exibidos para incluir a previsão do tempo
 menu_principal <- function() {
   while (TRUE) {
@@ -281,6 +332,30 @@ menu_principal <- function() {
       resultado2 <- calcular_para_area(area2, dados2)
       estatisticas2 <- calcular_estatisticas(resultado2)
       exibir_resultados_e_previsao(area2, cultura2, estatisticas2)
+    }
+
+    # Perguntar se o usuário deseja atualizar dados de ambas as culturas
+    atualizar <- readline("\nDeseja atualizar algum dado das culturas? (S para Sim, N para Não): ")
+    if (toupper(atualizar) == "S") {
+      # Atualizar dados da primeira cultura
+      dados1 <- atualizar_dados(cultura1, dados1)
+      
+      # Atualizar dados da segunda cultura, se houver
+      if (!is.null(cultura2)) {
+        dados2 <- atualizar_dados(cultura2, dados2)
+      }
+    }
+    
+    # Perguntar se o usuário deseja deletar dados de ambas as culturas
+    deletar <- readline("\nDeseja deletar algum dado das culturas? (S para Sim, N para Não): ")
+    if (toupper(deletar) == "S") {
+      # Deletar dados da primeira cultura
+      dados1 <- deletar_dados(cultura1, dados1)
+      
+      # Deletar dados da segunda cultura, se houver
+      if (!is.null(cultura2)) {
+        dados2 <- deletar_dados(cultura2, dados2)
+      }
     }
     
     # Perguntar se o usuário deseja sair ou reiniciar
