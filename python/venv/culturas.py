@@ -76,40 +76,63 @@ def escolher_cultura():
         print("Opção inválida. Tente novamente.")
         return escolher_cultura()
 
+
 # Função para atualizar dados de uma cultura
 def atualizar_dados(cultura, dados):
-    print(f"\nAtualizando dados para {cultura}:")
-    itens = list(dados.keys())
-    for i, item in enumerate(itens, start=1):
-        print(f"{i} - {item}: {dados[item]}")
-    try:
-        escolha = int(input("Informe o número do item que deseja atualizar: "))
-        if 1 <= escolha <= len(itens):
-            chave = itens[escolha - 1]
-            novo_valor = int(input(f"Informe o novo valor para {chave}: "))
-            dados[chave] = novo_valor
-            print(f"{chave} atualizado para {novo_valor}.")
-        else:
-            print("Número inválido.")
-    except ValueError:
-        print("Entrada inválida. Por favor, insira um número.")
+    while True:
+        print(f"\nAtualizando dados para {cultura}:")
+        itens = list(dados.keys())
+        for i, item in enumerate(itens, start=1):
+            print(f"{i} - {item}: {dados[item]}")
+        print(f"{len(itens) + 1} - Seguir sem atualizar")
+
+        try:
+            escolha = int(input("Informe o número do item que deseja atualizar: "))
+            if 1 <= escolha <= len(itens):
+                chave = itens[escolha - 1]
+                novo_valor = float(input(f"Informe o novo valor para {chave}: "))
+                dados[chave] = novo_valor
+                print(f"{chave} atualizado para {novo_valor}.")
+            elif escolha == len(itens) + 1:
+                print("Seguindo sem atualizar.")
+                break
+            else:
+                print("Número inválido.")
+        except ValueError:
+            print("Entrada inválida. Por favor, insira um número.")
+
+        continuar = input("Deseja continuar atualizando dados? (S para Sim, N para Não): ").upper()
+        if continuar != "S":
+            break
+
 
 # Função para deletar dados de uma cultura
 def deletar_dados(cultura, dados):
-    print(f"\nDeletando dados para {cultura}:")
-    itens = list(dados.keys())
-    for i, item in enumerate(itens, start=1):
-        print(f"{i} - {item}: {dados[item]}")
-    try:
-        escolha = int(input("Informe o número do item que deseja deletar: "))
-        if 1 <= escolha <= len(itens):
-            chave = itens[escolha - 1]
-            dados[chave] = 0  # Define o valor como 0 ao invés de deletar a chave
-            print(f"Valor de {chave} deletado (definido como 0).")
-        else:
-            print("Número inválido.")
-    except ValueError:
-        print("Entrada inválida. Por favor, insira um número.")
+    while True:
+        print(f"\nDeletando dados para {cultura}:")
+        itens = list(dados.keys())
+        for i, item in enumerate(itens, start=1):
+            print(f"{i} - {item}: {dados[item]}")
+        print(f"{len(itens) + 1} - Seguir sem deletar")
+
+        try:
+            escolha = int(input("Informe o número do item que deseja deletar: "))
+            if 1 <= escolha <= len(itens):
+                chave = itens[escolha - 1]
+                dados[chave] = 0  # Define o valor como 0 ao invés de deletar a chave
+                print(f"Valor de {chave} deletado (definido como 0).")
+            elif escolha == len(itens) + 1:
+                print("Seguindo sem deletar.")
+                break
+            else:
+                print("Número inválido.")
+        except ValueError:
+            print("Entrada inválida. Por favor, insira um número.")
+
+        continuar = input("Deseja continuar deletando dados? (S para Sim, N para Não): ").upper()
+        if continuar != "S":
+            break
+
 
 # Função principal
 def menu_principal():
@@ -181,11 +204,22 @@ def menu_principal():
             if cultura2:
                 deletar_dados(cultura2, dados2)
 
+        # Exibir dados atualizados
+        print(f"\nDados atualizados para {cultura1}:")
+        for item, valor in dados1.items():
+            print(f"{item.capitalize()}: {valor}")
+
+        if cultura2:
+            print(f"\nDados atualizados para {cultura2}:")
+            for item, valor in dados2.items():
+                print(f"{item.capitalize()}: {valor}")
+
         # Perguntar se o usuário deseja sair ou reiniciar
         reiniciar = input("\nDeseja realizar outra operação? (S para Sim, N para Não): ").upper()
         if reiniciar == "N":
             print("Encerrando o programa...")
             break
+
 
 # Executando o menu principal
 menu_principal()
