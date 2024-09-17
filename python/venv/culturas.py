@@ -169,13 +169,13 @@ def menu_principal():
                 print(f"{item.capitalize()}: {valor}")
 
         # Perguntar se o usuário deseja atualizar ou deletar dados
-        atualizar = input("\nDeseja atualizar algum dado? (S para Sim, N para Não): ").upper()
+        atualizar = input("\nDeseja atualizar algum dado das culturas? (S para Sim, N para Não): ").upper()
         if atualizar == "S":
             atualizar_dados(cultura1, dados1)
             if cultura2:
                 atualizar_dados(cultura2, dados2)
 
-        deletar = input("\nDeseja deletar algum dado? (S para Sim, N para Não): ").upper()
+        deletar = input("\nDeseja deletar algum dado das culturas? (S para Sim, N para Não): ").upper()
         if deletar == "S":
             deletar_dados(cultura1, dados1)
             if cultura2:
