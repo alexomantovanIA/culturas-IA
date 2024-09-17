@@ -213,53 +213,71 @@ exibir_resultados_e_previsao <- function(area, cultura, resultado) {
 
 # Função para atualizar dados de uma cultura
 atualizar_dados <- function(cultura, dados) {
-  cat("\nAtualizando dados para", cultura, ":\n")
-  itens <- names(dados)
-  
-  # Exibir itens com valores atuais
-  for (i in seq_along(itens)) {
-    cat(i, "-", itens[i], ":", dados[[itens[i]]], "\n")
-  }
-  
-  # Perguntar qual item o usuário deseja atualizar
-  escolha <- as.numeric(readline("Informe o número do item que deseja atualizar: "))
-  
-  if (!is.na(escolha) && escolha >= 1 && escolha <= length(itens)) {
-    chave <- itens[escolha]
-    novo_valor <- as.numeric(readline(paste("Informe o novo valor para", chave, ": ")))
-    if (!is.na(novo_valor)) {
+  while (TRUE) {
+    cat(paste("\nAtualizando dados para", cultura, ":\n"))
+    itens <- names(dados)
+    for (i in seq_along(itens)) {
+      cat(i, "-", itens[i], ":", dados[[itens[i]]], "\n")
+    }
+    cat(length(itens) + 1, "- Seguir sem atualizar\n")
+    
+    escolha <- as.integer(readline("Informe o número do item que deseja atualizar: "))
+    if (!is.na(escolha) && escolha >= 1 && escolha <= length(itens)) {
+      chave <- itens[escolha]
+      novo_valor <- as.numeric(readline(paste("Informe o novo valor para", chave, ": ")))
       dados[[chave]] <- novo_valor
       cat(chave, "atualizado para", novo_valor, ".\n")
+    } else if (escolha == length(itens) + 1) {
+      cat("Seguindo sem atualizar.\n")
+      break
     } else {
-      cat("Entrada inválida. O valor deve ser numérico.\n")
+      cat("Número inválido.\n")
     }
-  } else {
-    cat("Número inválido.\n")
+    
+    continuar <- toupper(readline("Deseja continuar atualizando dados? (S para Sim, N para Não): "))
+    if (continuar != "S") {
+      break
+    }
   }
   return(dados)
 }
 
 # Função para deletar dados de uma cultura
 deletar_dados <- function(cultura, dados) {
-  cat("\nDeletando dados para", cultura, ":\n")
+  while (TRUE) {
+    cat(paste("\nDeletando dados para", cultura, ":\n"))
+    itens <- names(dados)
+    for (i in seq_along(itens)) {
+      cat(i, "-", itens[i], ":", dados[[itens[i]]], "\n")
+    }
+    cat(length(itens) + 1, "- Seguir sem deletar\n")
+    
+    escolha <- as.integer(readline("Informe o número do item que deseja deletar: "))
+    if (!is.na(escolha) && escolha >= 1 && escolha <= length(itens)) {
+      chave <- itens[escolha]
+      dados[[chave]] <- 0  # Define o valor como 0 ao invés de deletar a chave
+      cat("Valor de", chave, "deletado (definido como 0).\n")
+    } else if (escolha == length(itens) + 1) {
+      cat("Seguindo sem deletar.\n")
+      break
+    } else {
+      cat("Número inválido.\n")
+    }
+    
+    continuar <- toupper(readline("Deseja continuar deletando dados? (S para Sim, N para Não): "))
+    if (continuar != "S") {
+      break
+    }
+  }
+  return(dados)
+}
+
+# Função para exibir os dados no formato desejado
+exibir_dados <- function(dados) {
   itens <- names(dados)
-  
-  # Exibir itens com valores atuais
   for (i in seq_along(itens)) {
     cat(i, "-", itens[i], ":", dados[[itens[i]]], "\n")
   }
-  
-  # Perguntar qual item o usuário deseja deletar
-  escolha <- as.numeric(readline("Informe o número do item que deseja deletar: "))
-  
-  if (!is.na(escolha) && escolha >= 1 && escolha <= length(itens)) {
-    chave <- itens[escolha]
-    dados[[chave]] <- 0  # Definir o valor como 0 ao invés de deletar a chave
-    cat("Valor de", chave, "deletado (definido como 0).\n")
-  } else {
-    cat("Número inválido.\n")
-  }
-  return(dados)
 }
 
 # Modifique o trecho onde os resultados são exibidos para incluir a previsão do tempo
@@ -356,6 +374,15 @@ menu_principal <- function() {
       if (!is.null(cultura2)) {
         dados2 <- deletar_dados(cultura2, dados2)
       }
+    }
+
+    # Exibir dados atualizados no formato desejado
+    cat(paste("\nDados atualizados para", cultura1, ":\n"))
+    exibir_dados(dados1)
+    
+    if (!is.null(cultura2)) {
+      cat(paste("\nDados atualizados para", cultura2, ":\n"))
+      exibir_dados(dados2)
     }
     
     # Perguntar se o usuário deseja sair ou reiniciar
